@@ -1,0 +1,203 @@
+/dts-v1/;
+
+#include "rt5350.dtsi"
+
+/ {
+	compatible = "RT5350F-BLINKINLABS-SUPERSWEET", "ralink,rt5350-soc";
+	model = "Blinkinlabs RT5350F-BLINKINLABS-SUPERSWEET";
+
+	gpio_export {
+		compatible = "gpio-export";
+		#size-cells = <0>;
+
+		gpio0 {
+			gpio-export,name = "gpio0";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 0 0>;
+		};
+
+		/* UARTF */
+		gpio7 {
+			/* UARTF_RTS_N */
+			gpio-export,name = "gpio7";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 7 0>;
+		};
+
+		gpio9 {
+			/* UARTF_CTS_N */
+			gpio-export,name = "gpio9";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 9 0>;
+		};
+
+		gpio11 {
+			/* UARTF_DTR_N */
+			gpio-export,name = "gpio11";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 11 0>;
+		};
+
+		gpio12 {
+			/* UARTF_DCD_N */
+			gpio-export,name = "gpio12";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 12 0>;
+		};
+
+		gpio13 {
+			/* UARTF_DSR_N */
+			gpio-export,name = "gpio13";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 13 0>;
+		};
+
+		gpio14 {
+			/* UARTF_RIN */
+			gpio-export,name = "gpio14";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 14 0>;
+		};
+
+		/* JTAG */
+		gpio17 {
+			/* JTAG_TDO */
+			gpio-export,name = "gpio17";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 17 0>;
+		};
+
+		gpio18 {
+			/* JTAG_TDI */
+			gpio-export,name = "gpio18";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 18 0>;
+		};
+
+		gpio19 {
+			/* JTAG_TMS */
+			gpio-export,name = "gpio19";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 19 0>;
+		};
+
+		gpio20 {
+			/* JTAG_TCLK */
+			gpio-export,name = "gpio20";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 20 0>;
+		};
+
+		gpio21 {
+			/* JTAG_TRST_N */
+			gpio-export,name = "gpio21";
+			gpio-export,direction_may_change = <1>;
+			gpios = <&gpio0 21 0>;
+		};
+
+	};
+
+
+	gpio-leds {
+		compatible = "gpio-leds";
+
+		led_0 {
+			/* UARTF_TXD */
+			label = "blinkinlabs:led_0";
+			gpios = <&gpio0 8 0>;
+		};
+
+		led_1 {
+			/* UARTF_RXD */
+			label = "blinkinlabs:led_1";
+			gpios = <&gpio0 10 0>;
+		};
+	};
+};
+
+&spi0 {
+	status = "okay";
+
+	m25p80@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		linux,modalias = "m25p80", "s25fl064k";
+		spi-max-frequency = <10000000>;
+
+		partition@0 {
+			label = "u-boot";
+			reg = <0x0 0x30000>;
+			read-only;
+		};
+
+		partition@30000 {
+			label = "u-boot-env";
+			reg = <0x30000 0x10000>;
+			read-only;
+		};
+
+		factory: partition@40000 {
+			label = "factory";
+			reg = <0x40000 0x10000>;
+			read-only;
+		};
+
+		partition@50000 {
+			label = "firmware";
+			reg = <0x50000 0x7b0000>;
+		};
+	};
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+&i2c {
+	status = "okay";
+};
+
+&pinctrl {
+	state_default: pinctrl0 {
+		gpio {
+			ralink,group = "jtag", "uartf";
+			ralink,function = "gpio";
+		};
+	};
+};
+
+&ethernet {
+	mtd-mac-address = <&factory 0x4>;
+};
+
+&esw {
+	/* mediatek,portmap = <0x2f>; */
+	mediatek,led_polarity = <0x17>;
+	mediatek,portmap = <0x11>;
+	mediatek,portdisable = <0x2e>;
+};
+
+&wmac {
+	ralink,mtd-eeprom = <&factory 0>;
+};
+
+&ehci {
+	status = "okay";
+};
+
+&ohci {
+	status = "okay";
+};
+
+
+&spi1 {
+	status = "okay";
+
+	spidev@0 {
+		compatible = "linux,spidev";
+		spi-max-frequency = <10000000>;
+		reg = <0>;
+	};
+};

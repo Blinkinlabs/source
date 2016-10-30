@@ -298,6 +298,9 @@ vocore)
 	ucidef_set_led_netdev "eth" "ETH" "$board:orange:eth" "eth0"
 	set_wifi_led "$board:green:status"
 	;;
+rt5350f-blinkinlabs-supersweet)
+	ucidef_set_led_default "power" "power" "$board:led_0" "0"
+	;;
 w502u)
 	set_usb_led "$board:blue:usb"
 	set_wifi_led "rt2800pci-phy0::radio"

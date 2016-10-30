@@ -382,6 +382,9 @@ ramips_board_detect() {
 	*"RT5350F-OLinuXino-EVB")
 		name="rt5350f-olinuxino-evb"
 		;;
+	*"RT5350F-Blinkinlabs-Supersweet")
+		name="rt5350f-blinkinlabs-supersweet"
+		;;
 	*"RT-G32 B1")
 		name="rt-g32-b1"
 		;;

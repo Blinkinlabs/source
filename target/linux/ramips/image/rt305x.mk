@@ -372,6 +372,16 @@ endef
 TARGET_DEVICES += rt5350f-olinuxino-evb
 
 
+define Device/rt5350f-blinkinlabs-supersweet
+  DTS := RT5350F-BLINKINLABS-SUPERSWEET
+  DEVICE_TITLE := RT5350F-Blinkinlabs-Supersweet
+  DEVICE_PACKAGES := kmod-usb-core kmod-usb-ohci kmod-usb2 \
+		kmod-i2c-core kmod-i2c-ralink \
+		kmod-spi-dev
+endef
+TARGET_DEVICES += rt5350f-blinkinlabs-supersweet
+
+
 define Device/rt-g32-b1
   DTS := RT-G32-B1
   BLOCKSIZE := 4k
